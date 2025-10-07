@@ -1,560 +1,180 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع Reda الإسلامي</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Styling similar to the reference website */
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #0D1117;
-            color: #c9d1d9;
-        }
-        .header {
-            background-color: rgba(13, 17, 23, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #30363d;
-        }
-        .nav-link.active {
-            color: #58a6ff;
-            border-bottom: 2px solid #58a6ff;
-        }
-        .hero-section {
-            background-image: linear-gradient(rgba(13, 17, 23, 0.7), rgba(13, 17, 23, 0.9)), url('https://placehold.co/1920x1080/0D1117/58a6ff?text=Islamic+Art');
-            background-size: cover;
-            background-position: center;
-        }
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .card {
-            background-color: #161B22;
-            border: 1px solid #30363d;
-        }
-        .form-input, .form-select {
-            background-color: #010409;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-        }
-        .form-select:focus, .form-input:focus {
-            outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
-        }
-        .btn-primary {
-            background-color: #238636;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        .btn-primary:hover {
-            background-color: #2ea043;
-        }
-        .loader {
-            border: 4px solid #30363d;
-            border-top: 4px solid #58a6ff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .tab-btn {
-            padding: 0.5rem 1rem;
-            transition: background-color 0.3s, color 0.3s;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            background-color: #58a6ff;
-            color: #0D1117;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* Add padding to body to prevent content from being hidden by fixed audio player */
-        body {
-            padding-bottom: 120px; /* Adjust if audio player height changes */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>موقعي الإسلامي</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #0f172a; color: white; font-family: 'Cairo', sans-serif; }
+    .nav-btn { background-color: #1e293b; color: #60a5fa; padding: 8px 16px; border-radius: 8px; margin: 0 4px; transition: 0.3s; }
+    .nav-btn:hover { background-color: #334155; }
+    .section { display: none; padding: 40px 20px; }
+    .active-section { display: block; }
+    .section-title { font-size: 24px; color: #60a5fa; margin-bottom: 20px; }
+    .card { background-color: #1e293b; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="text-center">
 
-    <!-- Header -->
-    <header class="header sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-white">Reda</h1>
-            <nav class="hidden md:flex items-center space-x-reverse space-x-4">
-                <a href="#home" class="nav-link text-md hover:text-blue-400 transition pb-1">الرئيسية</a>
-                <a href="#quran" class="nav-link text-md hover:text-blue-400 transition pb-1">القرآن</a>
-                <a href="#hadith" class="nav-link text-md hover:text-blue-400 transition pb-1">الحديث والسيرة</a>
-                <a href="#hisn" class="nav-link text-md hover:text-blue-400 transition pb-1">حصن المسلم</a>
-                <a href="#lectures" class="nav-link text-md hover:text-blue-400 transition pb-1">محاضرات</a>
-                <a href="#prayer" class="nav-link text-md hover:text-blue-400 transition pb-1">الصلاة</a>
-                <a href="#contact" class="nav-link text-md hover:text-blue-400 transition pb-1">تواصل معنا</a>
-            </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-white text-2xl">☰</button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
-            <a href="#home" class="nav-link block text-center py-3 hover:bg-gray-800 transition">الرئيسية</a>
-            <a href="#quran" class="nav-link block text-center py-3 hover:bg-gray-800 transition">القرآن الكريم</a>
-            <a href="#hadith" class="nav-link block text-center py-3 hover:bg-gray-800 transition">الحديث والسيرة</a>
-            <a href="#hisn" class="nav-link block text-center py-3 hover:bg-gray-800 transition">حصن المسلم</a>
-            <a href="#lectures" class="nav-link block text-center py-3 hover:bg-gray-800 transition">محاضرات</a>
-            <a href="#prayer" class="nav-link block text-center py-3 hover:bg-gray-800 transition">أوقات الصلاة</a>
-            <a href="#contact" class="nav-link block text-center py-3 hover:bg-gray-800 transition">تواصل معنا</a>
-        </div>
-    </header>
+  <header class="p-4 bg-gray-800 shadow-lg">
+    <h1 class="text-2xl font-bold text-blue-400 mb-2">🌙 موقعي الإسلامي</h1>
+    <nav>
+      <button class="nav-btn" onclick="showSection('home')">الرئيسية</button>
+      <button class="nav-btn" onclick="showSection('azkar'); loadAzkar()">الأذكار</button>
+      <button class="nav-btn" onclick="showSection('duaa'); loadDuaa()">الأدعية</button>
+      <button class="nav-btn" onclick="showSection('reminders'); loadReminders()">التذكير</button>
+      <button class="nav-btn" onclick="showSection('lectures'); loadLectures()">المحاضرات</button>
+      <button class="nav-btn" onclick="showSection('quran'); loadQuran()">القرآن الكريم</button>
+      <button class="nav-btn" onclick="showSection('contact')">تواصل معنا</button>
+    </nav>
+  </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow">
-        <!-- Home Page -->
-        <section id="home-page" class="page">
-            <div class="hero-section h-[calc(100vh-76px)] flex items-center justify-center text-center">
-                <div>
-                    <h2 class="text-5xl md:text-7xl font-bold text-white">موقع Reda الإسلامي</h2>
-                    <p class="text-xl md:text-2xl mt-4 text-gray-300">طريقك لفهم أعمق لدينك</p>
-                    <a href="#quran" class="nav-link-btn inline-block mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-transform transform hover:scale-105">استمع للقرآن الكريم</a>
-                </div>
+  <!-- الصفحة الرئيسية -->
+  <section id="home" class="section active-section">
+    <h2 class="section-title">✨ مرحبًا بك في موقعك الإسلامي</h2>
+    <p class="mt-4 text-lg">تعلّم واذكر الله واستمع لمحاضرات مؤثرة وتلاوات خاشعة ❤️</p>
+  </section>
+
+  <!-- الأذكار -->
+  <section id="azkar" class="section">
+    <h2 class="section-title">📿 الأذكار</h2>
+    <div id="azkar-content" class="grid gap-4 mt-4"></div>
+  </section>
+
+  <!-- الأدعية -->
+  <section id="duaa" class="section">
+    <h2 class="section-title">🤲 الأدعية</h2>
+    <div id="duaa-content" class="grid gap-4 mt-4"></div>
+  </section>
+
+  <!-- التذكير -->
+  <section id="reminders" class="section">
+    <h2 class="section-title">💭 التذكير</h2>
+    <div id="reminders-content" class="grid gap-4 mt-4"></div>
+  </section>
+
+  <!-- المحاضرات -->
+  <section id="lectures" class="section">
+    <h2 class="section-title">🎥 المحاضرات</h2>
+    <div id="lectures-container" class="grid gap-4 mt-4"></div>
+  </section>
+
+  <!-- القرآن الكريم -->
+  <section id="quran" class="section">
+    <h2 class="section-title">📖 القرآن الكريم</h2>
+    <div id="quran-container" class="grid gap-4 mt-4"></div>
+  </section>
+
+  <!-- تواصل معنا -->
+  <section id="contact" class="section">
+    <h2 class="section-title">📩 تواصل معنا</h2>
+    <form id="contact-form" class="max-w-md mx-auto bg-gray-700 p-4 rounded-lg">
+      <input type="text" placeholder="الاسم" class="w-full mb-3 p-2 rounded text-black" required>
+      <input type="email" placeholder="البريد الإلكتروني" class="w-full mb-3 p-2 rounded text-black" required>
+      <textarea placeholder="الرسالة" class="w-full mb-3 p-2 rounded text-black" rows="4" required></textarea>
+      <button type="submit" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600">إرسال</button>
+    </form>
+  </section>
+
+  <script>
+    // تبديل الصفحات
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+      document.getElementById(id).classList.add('active-section');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Azkar Page ---
+      function loadAzkar() {
+        const azkarContent = document.getElementById('azkar-content');
+        azkarContent.innerHTML = [
+          {title: 'أذكار الصباح', body: 'اللّهـمّ بك أصبحنا وبك أمسينا...'},
+          {title: 'أذكار المساء', body: 'اللّهـمّ بك أمسينا وبك أصبحنا...'},
+          {title: 'أذكار النوم', body: 'بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي...'}
+        ].map(z => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${z.title}</h3><p class="mt-2">${z.body}</p></div>`).join('');
+      }
+
+      // --- Duaa Page ---
+      function loadDuaa() {
+        const duaaContent = document.getElementById('duaa-content');
+        duaaContent.innerHTML = [
+          {title: 'سيد الاستغفار', body: 'اللهم أنت ربي لا إله إلا أنت...'},
+          {title: 'دعاء الثبات', body: 'ربنا لا تزغ قلوبنا بعد إذ هديتنا...'}
+        ].map(d => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${d.title}</h3><p class="mt-2">${d.body}</p></div>`).join('');
+      }
+
+      // --- Reminders Page ---
+      function loadReminders() {
+        const remindersContent = document.getElementById('reminders-content');
+        remindersContent.innerHTML = [
+          {title: 'آية تبعث الأمل', body: 'قل يا عبادي الذين أسرفوا على أنفسهم لا تقنطوا من رحمة الله'},
+          {title: 'قول لابن القيم', body: 'إذا أراد الله بعبد خيرًا فتح له باب التوبة...'}
+        ].map(r => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${r.title}</h3><p class="mt-2">${r.body}</p></div>`).join('');
+      }
+
+      // --- Lectures Page ---
+      function loadLectures() {
+        const lecturesContainer = document.getElementById('lectures-container');
+        const videos = [
+          { id: '6evB0hHEUxw', title: 'التوبة الصادقة | الشيخ سمير مصطفى' },
+          { id: 'tCNBVOwDTkw', title: 'توب قبل الندم | محمد الغليظ' },
+          { id: 'qgzo-OKl_p4', title: 'كيف أعود إلى الله | عمر عبد الكافي' }
+        ];
+        lecturesContainer.innerHTML = videos.map(v => `
+          <div class="card">
+            <div class="aspect-w-16 aspect-h-9 bg-black">
+              <iframe src="https://www.youtube.com/embed/${v.id}" frameborder="0" allowfullscreen class="w-full h-64"></iframe>
             </div>
-        </section>
+            <div class="p-2"><h3 class="text-lg font-semibold">${v.title}</h3></div>
+          </div>`).join('');
+      }
 
-        <!-- Quran Page -->
-        <section id="quran-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-4">القرآن الكريم الصوتي</h2>
-            <div class="max-w-md mx-auto mb-8">
-                <label for="global-reciter-select" class="block mb-2 text-lg">اختر القارئ:</label>
-                <select id="global-reciter-select" class="form-select w-full p-3 rounded-md"></select>
-            </div>
-            <div id="surah-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-        </section>
-        
-        <!-- Hadith & Seerah Page -->
-        <section id="hadith-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-8">الحديث النبوي والسيرة</h2>
-            <div class="tabs-container max-w-4xl mx-auto mb-6 flex justify-center p-1 bg-gray-900 rounded-lg space-x-reverse space-x-2">
-                <button class="tab-btn hadith-tab active" data-tab="hadith-content">الأربعون النووية</button>
-                <button class="tab-btn hadith-tab" data-tab="seerah-content">السيرة النبوية</button>
-            </div>
-            <div id="hadith-content" class="tab-content active space-y-4"></div>
-            <div id="seerah-content" class="tab-content space-y-6"></div>
-        </section>
+      // --- Quran Page ---
+      function loadQuran() {
+        const quranContainer = document.getElementById('quran-container');
+        const reciters = [
+          { name: 'عبد الباسط عبد الصمد', src: 'https://server6.mp3quran.net/abdsamad/001.mp3' },
+          { name: 'محمد صديق المنشاوي', src: 'https://server8.mp3quran.net/minsh/001.mp3' },
+          { name: 'مشاري راشد العفاسي', src: 'https://server8.mp3quran.net/afs/001.mp3' },
+          { name: 'ماهر المعيقلي', src: 'https://server8.mp3quran.net/maher/001.mp3' },
+          { name: 'عبد الرحمن السديس', src: 'https://server8.mp3quran.net/sds/001.mp3' },
+          { name: 'سعود الشريم', src: 'https://server8.mp3quran.net/shur/001.mp3' },
+          { name: 'ياسر الدوسري', src: 'https://server8.mp3quran.net/yasser/001.mp3' },
+          { name: 'ناصر القطامي', src: 'https://server8.mp3quran.net/qtm/001.mp3' },
+          { name: 'إدريس أبكر', src: 'https://server8.mp3quran.net/abkr/001.mp3' },
+          { name: 'فارس عباد', src: 'https://server8.mp3quran.net/frs_a/001.mp3' },
+          { name: 'أحمد العجمي', src: 'https://server8.mp3quran.net/ajm/001.mp3' },
+          { name: 'محمد أيوب', src: 'https://server8.mp3quran.net/ayyub/001.mp3' },
+          { name: 'خالد الجليل', src: 'https://server8.mp3quran.net/jleel/001.mp3' },
+          { name: 'عادل الكلباني', src: 'https://server8.mp3quran.net/klb/001.mp3' },
+          { name: 'إبراهيم الأخضر', src: 'https://server8.mp3quran.net/akdr/001.mp3' },
+          { name: 'هزاع البلوشي', src: 'https://server8.mp3quran.net/hazza/001.mp3' },
+          { name: 'سعد الغامدي', src: 'https://server8.mp3quran.net/s_gmd/001.mp3' },
+          { name: 'عبد الله بصفر', src: 'https://server8.mp3quran.net/bsfr/001.mp3' },
+          { name: 'خالد القحطاني', src: 'https://server8.mp3quran.net/qht/001.mp3' },
+          { name: 'مشاري العتيبي', src: 'https://server8.mp3quran.net/mtby/001.mp3' }
+        ];
 
-        <!-- Hisn Almuslim Page -->
-        <section id="hisn-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-8">حصن المسلم</h2>
-            <div class="tabs-container max-w-4xl mx-auto mb-6 flex justify-center p-1 bg-gray-900 rounded-lg space-x-reverse space-x-2 overflow-x-auto">
-                <button class="tab-btn hisn-tab active" data-tab="adhkar-content">الأذكار</button>
-                <button class="tab-btn hisn-tab" data-tab="duaa-content">أدعية مأثورة</button>
-                <button class="tab-btn hisn-tab" data-tab="reminders-content">رقائق ومواعظ</button>
-                <button class="tab-btn hisn-tab" data-tab="tasbih-content">السبحة</button>
-            </div>
-            <div id="adhkar-content" class="tab-content active space-y-4"></div>
-            <div id="duaa-content" class="tab-content space-y-4"></div>
-            <div id="reminders-content" class="tab-content space-y-4"></div>
-            <div id="tasbih-content" class="tab-content text-center">
-                 <div class="card p-8 rounded-lg max-w-sm mx-auto">
-                    <h3 class="text-2xl font-semibold mb-4">السبحة الإلكترونية</h3>
-                    <div id="tasbih-count" class="text-7xl font-bold my-6">0</div>
-                    <div class="flex items-center justify-center space-x-4">
-                        <button id="tasbih-btn" class="w-24 h-24 bg-blue-600 rounded-full text-white text-3xl shadow-lg focus:outline-none flex items-center justify-center transform hover:scale-105 transition-transform">+</button>
-                        <button id="reset-tasbih-btn" class="w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center text-lg transform hover:scale-105 transition-transform">إعادة</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        quranContainer.innerHTML = reciters.map(r => `
+          <div class="card">
+            <h3 class="text-xl font-semibold text-blue-400 mb-2">${r.name}</h3>
+            <audio controls class="w-full">
+              <source src="${r.src}" type="audio/mpeg">
+              المتصفح لا يدعم تشغيل الصوت.
+            </audio>
+          </div>
+        `).join('');
+      }
 
-        <!-- Lectures Page -->
-        <section id="lectures-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-8">محاضرات في الرجوع إلى الله</h2>
-            <div id="lectures-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </section>
-
-        <!-- Prayer Times Page -->
-        <section id="prayer-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-8">أوقات الصلاة</h2>
-            <div class="max-w-2xl mx-auto card p-8 rounded-lg">
-                <button id="auto-location-btn" class="w-full mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">✨ تحديد موقعي تلقائياً</button>
-                <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                    <select id="country-select" class="form-select w-full p-3 rounded-md"></select>
-                    <select id="city-select" class="form-select w-full p-3 rounded-md" disabled></select>
-                </div>
-                <div id="prayer-times-container" class="text-center">
-                    <p>يرجى اختيار الدولة والمدينة أو استخدام الموقع التلقائي.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Page -->
-        <section id="contact-page" class="page container mx-auto px-6 py-12">
-            <h2 class="text-4xl font-bold text-center mb-8">تواصل معنا</h2>
-            <div class="max-w-xl mx-auto card p-8 rounded-lg">
-                <form id="contact-form">
-                    <div class="mb-4"><label for="name" class="block mb-2">الاسم</label><input type="text" id="name" class="form-input w-full p-3 rounded-md" required></div>
-                    <div class="mb-4"><label for="email" class="block mb-2">البريد الإلكتروني</label><input type="email" id="email" class="form-input w-full p-3 rounded-md" required></div>
-                    <div class="mb-6"><label for="message" class="block mb-2">رسالتك</label><textarea id="message" rows="5" class="form-input w-full p-3 rounded-md" required></textarea></div>
-                    <button type="submit" class="w-full btn-primary font-bold py-3 px-4 rounded-md transition">إرسال</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- Fixed Audio Player -->
-    <div id="audio-player-container" class="fixed bottom-0 left-0 right-0 p-4 bg-gray-900/80 backdrop-blur-md shadow-lg text-center hidden">
-        <h3 id="player-surah-title" class="text-lg font-semibold mb-2"></h3>
-        <audio id="audio-player" controls class="w-full max-w-md mx-auto"></audio>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-6 mt-auto">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2025 موقع Reda الإسلامي. كل الحقوق محفوظة.</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Global State & Data ---
-            let currentPlayingSurahId = null;
-
-            // --- Basic UI & Navigation ---
-            const pages = document.querySelectorAll('.page');
-            const mainContent = document.querySelector('main');
-            const header = document.querySelector('header');
-            const footer = document.querySelector('footer');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const navLinkBtns = document.querySelectorAll('.nav-link-btn');
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            function showPage(pageId) {
-                pages.forEach(page => page.classList.toggle('active', page.id === `${pageId}-page`));
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.toggle('active', link.getAttribute('href') === `#${pageId}`);
-                });
-                window.scrollTo(0, 0);
-
-                // Lazy load content
-                if (pageId === 'quran' && !document.getElementById('surah-container').hasChildNodes()) initQuranPage();
-                if (pageId === 'prayer' && document.getElementById('country-select').options.length <= 1) initPrayerTimesPage();
-                if (pageId === 'lectures' && !document.getElementById('lectures-container').hasChildNodes()) loadLectures();
-                if (pageId === 'hadith' && !document.getElementById('hadith-content').hasChildNodes()) loadHadithSeerahPage();
-                if (pageId === 'hisn' && !document.getElementById('adhkar-content').hasChildNodes()) loadHisnPage();
-            }
-
-            function handleNav(e) {
-                e.preventDefault();
-                const targetId = e.currentTarget.getAttribute('href').substring(1);
-                showPage(targetId);
-                history.pushState({ page: targetId }, null, ` #${targetId}`);
-                mobileMenu.classList.add('hidden');
-            }
-
-            navLinks.forEach(link => link.addEventListener('click', handleNav));
-            navLinkBtns.forEach(btn => btn.addEventListener('click', handleNav));
-            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            window.addEventListener('popstate', (e) => showPage(e.state ? e.state.page : 'home'));
-            
-            const initialPage = window.location.hash ? window.location.hash.substring(1) : 'home';
-            showPage(initialPage);
-            
-            // --- Prayer Times Page ---
-            const prayerTimesContainer = document.getElementById('prayer-times-container');
-            async function getPrayerTimes(method, value) {
-                prayerTimesContainer.innerHTML = `<div class="loader"></div>`;
-                let url = '';
-                if (method === 'coords') {
-                    url = `https://api.aladhan.com/v1/timings?latitude=${value.latitude}&longitude=${value.longitude}&method=5`;
-                } else {
-                    url = `https://api.aladhan.com/v1/timingsByCity?city=${value.city}&country=${value.country}&method=5`;
-                }
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const data = await response.json();
-                    if(data.code !== 200) throw new Error(data.data);
-                    const timings = data.data.timings;
-                    const prayerNames = { Fajr: 'الفجر', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' };
-                    const locationName = method === 'coords' ? 'لموقعك الحالي' : `لمدينة ${value.city}`;
-                    prayerTimesContainer.innerHTML = `<h3 class="text-2xl font-bold mb-4">الأوقات ${locationName}</h3><div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-white">${Object.keys(prayerNames).map(key => `<div class="bg-gray-800 p-4 rounded-lg"><strong>${prayerNames[key]}</strong><p class="text-lg font-mono">${timings[key]}</p></div>`).join('')}</div>`;
-                } catch (error) {
-                    prayerTimesContainer.innerHTML = `<p class="text-red-400">حدث خطأ في جلب مواقيت الصلاة. ${error.message}</p>`;
-                }
-            }
-
-            async function initPrayerTimesPage() {
-                const countrySelect = document.getElementById('country-select');
-                const citySelect = document.getElementById('city-select');
-                const autoLocationBtn = document.getElementById('auto-location-btn');
-                autoLocationBtn.addEventListener('click', () => {
-                    if (navigator.geolocation) {
-                        prayerTimesContainer.innerHTML = `<div class="loader"></div>`;
-                        navigator.geolocation.getCurrentPosition(
-                            position => getPrayerTimes('coords', { latitude: position.coords.latitude, longitude: position.coords.longitude }),
-                            () => prayerTimesContainer.innerHTML = `<p class="text-red-400">تم رفض الوصول للموقع.</p>`
-                        );
-                    } else { alert('المتصفح لا يدعم تحديد الموقع.'); }
-                });
-                try {
-                    const response = await fetch('https://countriesnow.space/api/v0.1/countries');
-                    const data = await response.json();
-                    countrySelect.innerHTML = `<option value="">اختر الدولة</option>`;
-                    data.data.sort((a, b) => a.country.localeCompare(b.country)).forEach(country => {
-                        countrySelect.innerHTML += `<option value="${country.country}">${country.country}</option>`;
-                    });
-                } catch (error) { countrySelect.innerHTML = `<option value="">خطأ في تحميل الدول</option>`; }
-                countrySelect.addEventListener('change', async () => {
-                    const country = countrySelect.value;
-                    citySelect.innerHTML = `<option value="">جار التحميل...</option>`;
-                    citySelect.disabled = true;
-                    if (!country) { citySelect.innerHTML = `<option value="">اختر الدولة أولاً</option>`; return; }
-                    try {
-                        const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ "country": country })
-                        });
-                        const data = await response.json();
-                        if (data.error) throw new Error(data.msg);
-                        citySelect.innerHTML = `<option value="">اختر المدينة</option>`;
-                        data.data.sort().forEach(city => {
-                            citySelect.innerHTML += `<option value="${city}">${city}</option>`;
-                        });
-                        citySelect.disabled = false;
-                    } catch (error) { citySelect.innerHTML = `<option value="">خطأ في تحميل المدن</option>`; }
-                });
-                citySelect.addEventListener('change', () => {
-                    const country = countrySelect.value; const city = citySelect.value;
-                    if (country && city) { getPrayerTimes('city', { country, city }); }
-                });
-            }
-            
-            // --- Quran Page ---
-            const surahContainer = document.getElementById('surah-container');
-            const audioPlayerContainer = document.getElementById('audio-player-container');
-            const audioPlayer = document.getElementById('audio-player');
-            const playerSurahTitle = document.getElementById('player-surah-title');
-            const globalReciterSelect = document.getElementById('global-reciter-select');
-
-            const reciters = [
-                { id: "ar.alafasy", name: 'مشاري راشد العفاسي' },
-                { id: "ar.husary", name: 'محمود خليل الحصري' },
-                { id: "ar.abdulbasitmurattal", name: 'عبد الباسط عبد الصمد (مرتل)' },
-                { id: "ar.minshawi", name: 'محمد صديق المنشاوي' },
-                { id: "ar.sudais", name: 'عبدالرحمن السديس' },
-                { id: "ar.saoodshuraym", name: 'سعود الشريم' },
-                { id: "ar.mahermuaiqly", name: 'ماهر المعيقلي' },
-                { id: "ar.yasseraddousari", name: 'ياسر الدوسري' },
-                { id: "ar.saadalghamidi", name: 'سعد الغامدي' },
-                { id: "ar.ahmedajamy", name: 'أحمد بن علي العجمي' },
-                { id: "ar.abubakrshatri", name: 'أبو بكر الشاطري' },
-                { id: "ar.faresabbad", name: 'فارس عباد' }
-            ];
-
-            async function initQuranPage() {
-                populateGlobalReciters();
-                surahContainer.innerHTML = `<div class="loader col-span-full"></div>`;
-                try {
-                    const response = await fetch(`https://api.alquran.cloud/v1/surah`);
-                    const data = await response.json();
-                    surahContainer.innerHTML = data.data.map(surah => `
-                        <div class="card p-4 rounded-lg text-center flex flex-col justify-between">
-                            <div><h3 class="text-xl font-semibold">${surah.name}</h3><p class="text-gray-400">${surah.numberOfAyahs} آيات</p></div>
-                            <button class="listen-btn mt-4 px-4 py-2 bg-blue-600 text-white rounded-md w-full hover:bg-blue-700 transition" 
-                                data-surah-id="${surah.number}" data-surah-name="${surah.name}">
-                                استماع
-                            </button>
-                        </div>`).join('');
-                } catch (error) { surahContainer.innerHTML = `<p class="text-red-400 col-span-full text-center">حدث خطأ في جلب سور القرآن.</p>`; }
-            }
-            
-            function populateGlobalReciters() {
-                globalReciterSelect.innerHTML = reciters.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
-            }
-            
-            function loadAndPlayAudio(surahId) {
-                const reciterId = globalReciterSelect.value;
-                const surahName = document.querySelector(`.listen-btn[data-surah-id='${surahId}']`).dataset.surahName;
-                playerSurahTitle.textContent = `جاري تحميل سورة ${surahName}...`;
-                audioPlayer.src = ''; // Clear previous source
-                
-                try {
-                    const paddedSurahId = String(surahId).padStart(3, '0');
-                    const reciterApiMap = {
-                        "ar.alafasy": "Alafasy_128kbps",
-                        "ar.husary": "Husary_128kbps",
-                        "ar.abdulbasitmurattal": "Abdul_Basit_Murattal_128kbps",
-                        "ar.minshawi": "Minshawy_Murattal_128kbps",
-                        "ar.sudais": "Soudais_128kbps",
-                        "ar.saoodshuraym": "Shuraym_128kbps",
-                        "ar.mahermuaiqly": "Maher_AlMuaiqly_128kbps",
-                        "ar.yasseraddousari": "Yasser_Ad-Dussary_128kbps",
-                        "ar.saadalghamidi": "Ghamadi_192kbps",
-                        "ar.ahmedajamy": "ahmed_ibn_ali_al_ajamy_128kbps", // Corrected Link
-                        "ar.abubakrshatri": "Abu_Bakr_Ash-Shaatree_128kbps",
-                        "ar.faresabbad": "Fares_Abbad_128kbps"
-                    };
-                    const reciterForUrl = reciterApiMap[reciterId];
-                    if (!reciterForUrl) throw new Error("Reciter mapping not found");
-
-                    audioPlayer.src = `https://everyayah.com/data/${reciterForUrl}/${paddedSurahId}.mp3`;
-                    
-                    audioPlayer.load(); // Explicitly load the new source
-                    const playPromise = audioPlayer.play();
-
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            playerSurahTitle.textContent = `جاري تشغيل سورة ${surahName}`;
-                        }).catch(error => {
-                            console.error("Audio play error:", error);
-                            playerSurahTitle.textContent = `خطأ في التشغيل التلقائي. اضغط تشغيل لبدء سورة ${surahName}.`;
-                        });
-                    }
-
-                } catch (error) { 
-                    console.error("Audio setup error:", error);
-                    playerSurahTitle.textContent = 'خطأ في إعداد الصوت.';
-                }
-
-                audioPlayer.onerror = (e) => {
-                    console.error("Audio element error:", e);
-                    playerSurahTitle.textContent = `خطأ في تحميل ملف الصوت لسورة ${surahName}.`;
-                };
-            }
-
-            surahContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('listen-btn')) {
-                    const btn = e.target;
-                    currentPlayingSurahId = btn.dataset.surahId;
-                    audioPlayerContainer.classList.remove('hidden');
-                    loadAndPlayAudio(currentPlayingSurahId);
-                }
-            });
-
-            globalReciterSelect.addEventListener('change', () => {
-                 if (currentPlayingSurahId) {
-                     loadAndPlayAudio(currentPlayingSurahId);
-                 }
-            });
-
-            // --- Hadith & Seerah Page ---
-            function loadHadithSeerahPage() {
-                const hadithContent = document.getElementById('hadith-content');
-                const seerahContent = document.getElementById('seerah-content');
-                document.querySelectorAll('.hadith-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        document.querySelectorAll('.hadith-tab').forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        document.querySelectorAll('#hadith-page .tab-content').forEach(c => c.classList.toggle('active', c.id === tab.dataset.tab));
-                    });
-                });
-                const hadiths = [
-                    { title: '1: الأعمال بالنيات', body: 'عن أميرِ المؤمنينَ أبي حفصٍ عمرَ بنِ الخطابِ رَضِي اللهُ عَنْهُ قالَ: سَمِعْتُ رسولَ اللهِ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ يقولُ: «إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى...»' },
-                    { title: '2: مراتب الدين', body: 'عن عمر رضي الله عنه أيضا ، قال : بينما نحن جلوس عند رسول الله صلى الله عليه وسلم ذات يوم، إذ طلع علينا رجل شديد بياض الثياب، شديد سواد الشعر...' },
-                    { title: '3: أركان الإسلام', body: 'عن أبي عبد الرحمن عبد الله بن عمر بن الخطاب رضي الله عنهما ، قال : سمعت رسول الله صلى الله عليه وسلم يقول : «بني الإسلام على خمس...»' },
-                    { title: '4: مراحل الخلق', body: 'عن أبي عبدِ الرحمنِ عبدِ اللهِ بنِ مسعودٍ رضي الله عنه، قال: حدَّثنا رسولُ اللهِ صلى الله عليه وسلم وهو الصادقُ المصدوقُ: «إِنَّ أَحَدَكُمْ يُجْمَعُ خَلْقُهُ فِي بَطْنِ أُمِّهِ أَرْبَعِينَ يَوْمًا نُطْفَةً...»' },
-                    { title: '5: النهي عن البدع', body: 'عن أم المؤمنين أم عبد الله عائشة رضي الله عنها ، قالت : قال رسول الله صلى الله عليه وسلم : «من أحدث في أمرنا هذا ما ليس منه فهو رد».' },
-                    { title: '6: الحلال بيّن والحرام بيّن', body: 'عن أبي عبدالله النعمان بن بشير رضي الله عنهما ، قال : سمعت رسول الله صلى الله عليه وسلم يقول : «إن الحلال بيّن، وإن الحرام بيّن، وبينهما أمور مشتبهات...»' },
-                    { title: '7: الدين النصيحة', body: 'عن أبي رقية تميم بن أوس الداري رضي الله عنه أن النبي صلى الله عليه وسلم قال : «الدين النصيحة» قلنا : لمن ؟ قال : «لله ولكتابه ولرسوله ولأئمة المسلمين وعامتهم».' },
-                    { title: '8: حرمة دم المسلم وماله', body: 'عن ابن عمر رضي الله عنهما أن رسول الله صلى الله عليه وسلم قال : «أمرت أن أقاتل الناس حتى يشهدوا أن لا إله إلا الله وأن محمدا رسول الله...»' },
-                    { title: '9: النهي عن كثرة السؤال', body: 'عن أبي هريرة عبد الرحمن بن صخر رضي الله عنه ، قال : سمعت رسول الله صلى الله عليه وسلم يقول : «ما نهيتكم عنه فاجتنبوه، وما أمرتكم به فأتوا منه ما استطعتم...»' },
-                    { title: '10: طيب الكسب', body: 'عن أبي هريرة رضي الله عنه ، قال : قال رسول الله صلى الله عليه وسلم : «إن الله تعالى طيب لا يقبل إلا طيبا...»' }
-                ];
-                hadithContent.innerHTML = hadiths.map(h => `<div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${h.title}</h3><p class="mt-2 leading-loose">${h.body}</p></div>`).join('');
-                seerahContent.innerHTML = `
-                    <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400 mb-2">مرحلة ما قبل النبوة</h3><p>وُلد النبي ﷺ يتيماً في مكة عام الفيل، وعُرف في قومه بصدقه وأمانته حتى لقبوه بالصادق الأمين.</p></div>
-                    <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400 mb-2">نزول الوحي والدعوة</h3><p>في سن الأربعين، نزل عليه جبريل بالوحي في غار حراء. بدأ دعوته سراً لثلاث سنوات، ثم جهر بها وتحمل الأذى في سبيلها.</p></div>
-                    <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400 mb-2">الهجرة وتأسيس الدولة</h3><p>هاجر من مكة إلى المدينة المنورة، حيث آخى بين المهاجرين والأنصار، ووضع وثيقة المدينة التي نظمت العلاقة بين سكانها، وأسس الدولة الإسلامية الأولى.</p></div>
-                    <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400 mb-2">الخلفاء الراشدون</h3><p>بعد وفاته، تولى الخلافة أبو بكر الصديق الذي حارب المرتدين وجمع القرآن. ثم عمر بن الخطاب الذي وسع الدولة ونظمها. ثم عثمان بن عفان الذي جمع الناس على مصحف واحد. ثم علي بن أبي طالب الذي عُرف بعلمه وشجاعته.</p></div>
-                `;
-            }
-
-            // --- Hisn Almuslim Page ---
-            function loadHisnPage() {
-                document.querySelectorAll('.hisn-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        document.querySelectorAll('.hisn-tab').forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        document.querySelectorAll('#hisn-page .tab-content').forEach(c => c.classList.toggle('active', c.id === tab.dataset.tab));
-                    });
-                });
-
-                const adhkarContent = document.getElementById('adhkar-content');
-                const duaaContent = document.getElementById('duaa-content');
-                const remindersContent = document.getElementById('reminders-content');
-                
-                adhkarContent.innerHTML = [
-                    {title: 'أذكار الصباح', body: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ... (مرة واحدة)'},
-                    {title: 'أذكار المساء', body: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ... (مرة واحدة)'},
-                    {title: 'أذكار ما بعد الصلاة', body: 'أَسْتَغْفِرُ الله (ثَلَاثاً)، اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ.'},
-                    {title: 'أذكار النوم', body: 'بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ.'}
-                ].map(item => `<div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2">${item.body}</p></div>`).join('');
-                
-                duaaContent.innerHTML = [
-                    {title: 'سيد الاستغفار', body: '"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ..."'},
-                    {title: 'دعاء جامع من القرآن', body: '"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"'},
-                    {title: 'دعاء الثبات', body: '"رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ"'},
-                    {title: 'دعاء للوالدين', body: '"rَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا"'}
-                ].map(item => `<div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2">${item.body}</p></div>`).join('');
-                
-                remindersContent.innerHTML = [
-                    {title: 'آية تبعث الأمل', body: '"قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا ۚ إِنَّهُ هُوَ الْغَفُورُ الرَّحِيمُ"', source: 'سورة الزمر: 53'},
-                    {title: 'من أقوال ابن القيم', body: '"لو علم العبد كيف يدبر الله له أموره، لعلم يقينًا أن الله أرحم به من أمه وأبيه، ولذاب قلبه محبة لله."'},
-                    {title: 'حديث قدسي عن الرحمة', body: '"يا ابن آدم، إنك ما دعوتني ورجوتني غفرت لك على ما كان منك ولا أبالي. يا ابن آدم، لو بلغت ذنوبك عنان السماء ثم استغفرتني غفرت لك ولا أبالي..."'},
-                    {title: 'من أقوال ابن تيمية', body: '"الاستغفار أكبر الحسنات وبابه واسع، فمن أحس بتقصير في قوله أو عمله أو حاله أو رزقه أو تقلب قلبه، فعليه بالتوحيد والاستغفار، ففيهما الشفاء إذا كانا بصدق وإخلاص."'}
-                ].map(item => `<div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2 leading-loose">${item.body}</p>${item.source ? `<span class="text-sm text-gray-400 block mt-2">- ${item.source}</span>` : ''}</div>`).join('');
-
-                const tasbihCount = document.getElementById('tasbih-count');
-                let count = 0;
-                document.getElementById('tasbih-btn').addEventListener('click', () => tasbihCount.textContent = ++count);
-                document.getElementById('reset-tasbih-btn').addEventListener('click', () => { count = 0; tasbihCount.textContent = count; });
-            }
-
-            // --- Lectures Page ---
-            function loadLectures() {
-                const lecturesContainer = document.getElementById('lectures-container');
-                const videos = [ 
-                    { id: '6evB0hHEUxw', title: 'التوبة الصادقة | الشيخ سمير مصطفى' }, 
-                    { id: 'tCNBVOwDTkw', title: 'توب قبل الندم | محمد الغليظ' },
-                    { id: 'aPqZ3M5Kc_4', title: 'التوبة طريق الجنة | أمجد سمير' }, 
-                    { id: 'zpa8p3J0_V0', title: 'قصص عن التوبة | الشيخ أحمد عامر' },
-                    { id: 'g-06L9Y_p4c', title: 'قصة توبة ماعز | محمود الحسنات' }, 
-                    { id: 'cK6SrgzZ7Fg', title: 'طرائق التوبة ونتائجها | د. عثمان الخميس' },
-                    { id: 'i0c1E_qj39M', title: 'فرصة التوبة | د. حازم شومان' }, 
-                    { id: '1bZABqUO7VE', title: 'باب التوبة مفتوح | د. محمد راتب النابلسي' },
-                    { id: '6O-tW3x-v_M', title: 'باب التوبة | مصطفى حسني' }, 
-                    { id: '5YyKl-i2O_w', title: 'يا تارك الصلاة | خالد الراشد' },
-                    { id: '2gWuaGz_xY8', title: 'قصة مؤثرة عن التوبة | منصور السالمي' },
-                    { id: 'qgzo-OKl_p4', title: 'كيف أعود إلى الله | عمر عبد الكافي' },
-                    { id: 'x5W-sC_G-b4', title: 'أبواب الرجوع إلى الله | سعد العتيق' },
-                    { id: 'Ntk6f092Zmk', title: 'قصة توبة صادقة | نبيل العوضي' },
-                    { id: 'LS53l8LwpHs', title: 'التوبة النصوح | الشيخ سمير مصطفى' }
-                ];
-                lecturesContainer.innerHTML = videos.map(video => `
-                    <div class="card rounded-lg overflow-hidden">
-                        <div class="aspect-w-16 aspect-h-9 bg-black"><iframe src="https://www.youtube.com/embed/${video.id}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe></div>
-                        <div class="p-4"><h3 class="text-lg font-semibold">${video.title}</h3></div>
-                    </div>`).join('');
-            }
-            
-            // --- Contact Form ---
-            document.getElementById('contact-form').addEventListener('submit', (e) => { e.preventDefault(); alert('شكراً لرسالتك!'); e.target.reset(); });
-        });
-    </script>
+      // --- Contact Form ---
+      document.getElementById('contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('✅ تم إرسال رسالتك بنجاح!');
+        e.target.reset();
+      });
+    });
+  </script>
 </body>
 </html>
 
