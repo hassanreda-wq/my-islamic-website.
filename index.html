@@ -1,180 +1,57 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>موقعي الإسلامي</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #0f172a; color: white; font-family: 'Cairo', sans-serif; }
-    .nav-btn { background-color: #1e293b; color: #60a5fa; padding: 8px 16px; border-radius: 8px; margin: 0 4px; transition: 0.3s; }
-    .nav-btn:hover { background-color: #334155; }
-    .section { display: none; padding: 40px 20px; }
-    .active-section { display: block; }
-    .section-title { font-size: 24px; color: #60a5fa; margin-bottom: 20px; }
-    .card { background-color: #1e293b; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-  </style>
-</head>
-<body class="text-center">
 
-  <header class="p-4 bg-gray-800 shadow-lg">
-    <h1 class="text-2xl font-bold text-blue-400 mb-2">🌙 موقعي الإسلامي</h1>
-    <nav>
-      <button class="nav-btn" onclick="showSection('home')">الرئيسية</button>
-      <button class="nav-btn" onclick="showSection('azkar'); loadAzkar()">الأذكار</button>
-      <button class="nav-btn" onclick="showSection('duaa'); loadDuaa()">الأدعية</button>
-      <button class="nav-btn" onclick="showSection('reminders'); loadReminders()">التذكير</button>
-      <button class="nav-btn" onclick="showSection('lectures'); loadLectures()">المحاضرات</button>
-      <button class="nav-btn" onclick="showSection('quran'); loadQuran()">القرآن الكريم</button>
-      <button class="nav-btn" onclick="showSection('contact')">تواصل معنا</button>
-    </nav>
-  </header>
+{title: 'أذكار النوم', body: 'بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ.'}
+                ].map(item => <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2">${item.body}</p></div>).join('');
+                
+                duaaContent.innerHTML = [
+                    {title: 'سيد الاستغفار', body: '"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ..."'},
+                    {title: 'دعاء جامع من القرآن', body: '"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"'},
+                    {title: 'دعاء الثبات', body: '"رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ"'},
+                    {title: 'دعاء للوالدين', body: '"rَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا"'}
+                ].map(item => <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2">${item.body}</p></div>).join('');
+                
+                remindersContent.innerHTML = [
+                    {title: 'آية تبعث الأمل', body: '"قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا ۚ إِنَّهُ هُوَ الْغَفُورُ الرَّحِيمُ"', source: 'سورة الزمر: 53'},
+                    {title: 'من أقوال ابن القيم', body: '"لو علم العبد كيف يدبر الله له أموره، لعلم يقينًا أن الله أرحم به من أمه وأبيه، ولذاب قلبه محبة لله."'},
+                    {title: 'حديث قدسي عن الرحمة', body: '"يا ابن آدم، إنك ما دعوتني ورجوتني غفرت لك على ما كان منك ولا أبالي. يا ابن آدم، لو بلغت ذنوبك عنان السماء ثم استغفرتني غفرت لك ولا أبالي..."'},
+                    {title: 'من أقوال ابن تيمية', body: '"الاستغفار أكبر الحسنات وبابه واسع، فمن أحس بتقصير في قوله أو عمله أو حاله أو رزقه أو تقلب قلبه، فعليه بالتوحيد والاستغفار، ففيهما الشفاء إذا كانا بصدق وإخلاص."'}
+                ].map(item => <div class="card p-4 rounded-lg"><h3 class="text-xl font-semibold text-blue-400">${item.title}</h3><p class="mt-2 leading-loose">${item.body}</p>${item.source ? <span class="text-sm text-gray-400 block mt-2">- ${item.source}</span> : ''}</div>).join('');
 
-  <!-- الصفحة الرئيسية -->
-  <section id="home" class="section active-section">
-    <h2 class="section-title">✨ مرحبًا بك في موقعك الإسلامي</h2>
-    <p class="mt-4 text-lg">تعلّم واذكر الله واستمع لمحاضرات مؤثرة وتلاوات خاشعة ❤️</p>
-  </section>
+                const tasbihCount = document.getElementById('tasbih-count');
+                let count = 0;
+                document.getElementById('tasbih-btn').addEventListener('click', () => tasbihCount.textContent = ++count);
+                document.getElementById('reset-tasbih-btn').addEventListener('click', () => { count = 0; tasbihCount.textContent = count; });
+            }
 
-  <!-- الأذكار -->
-  <section id="azkar" class="section">
-    <h2 class="section-title">📿 الأذكار</h2>
-    <div id="azkar-content" class="grid gap-4 mt-4"></div>
-  </section>
-
-  <!-- الأدعية -->
-  <section id="duaa" class="section">
-    <h2 class="section-title">🤲 الأدعية</h2>
-    <div id="duaa-content" class="grid gap-4 mt-4"></div>
-  </section>
-
-  <!-- التذكير -->
-  <section id="reminders" class="section">
-    <h2 class="section-title">💭 التذكير</h2>
-    <div id="reminders-content" class="grid gap-4 mt-4"></div>
-  </section>
-
-  <!-- المحاضرات -->
-  <section id="lectures" class="section">
-    <h2 class="section-title">🎥 المحاضرات</h2>
-    <div id="lectures-container" class="grid gap-4 mt-4"></div>
-  </section>
-
-  <!-- القرآن الكريم -->
-  <section id="quran" class="section">
-    <h2 class="section-title">📖 القرآن الكريم</h2>
-    <div id="quran-container" class="grid gap-4 mt-4"></div>
-  </section>
-
-  <!-- تواصل معنا -->
-  <section id="contact" class="section">
-    <h2 class="section-title">📩 تواصل معنا</h2>
-    <form id="contact-form" class="max-w-md mx-auto bg-gray-700 p-4 rounded-lg">
-      <input type="text" placeholder="الاسم" class="w-full mb-3 p-2 rounded text-black" required>
-      <input type="email" placeholder="البريد الإلكتروني" class="w-full mb-3 p-2 rounded text-black" required>
-      <textarea placeholder="الرسالة" class="w-full mb-3 p-2 rounded text-black" rows="4" required></textarea>
-      <button type="submit" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600">إرسال</button>
-    </form>
-  </section>
-
-  <script>
-    // تبديل الصفحات
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
-      document.getElementById(id).classList.add('active-section');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // --- Azkar Page ---
-      function loadAzkar() {
-        const azkarContent = document.getElementById('azkar-content');
-        azkarContent.innerHTML = [
-          {title: 'أذكار الصباح', body: 'اللّهـمّ بك أصبحنا وبك أمسينا...'},
-          {title: 'أذكار المساء', body: 'اللّهـمّ بك أمسينا وبك أصبحنا...'},
-          {title: 'أذكار النوم', body: 'بِاسْمِكَ رَبِّ وَضَعْتُ جَنْبِي...'}
-        ].map(z => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${z.title}</h3><p class="mt-2">${z.body}</p></div>`).join('');
-      }
-
-      // --- Duaa Page ---
-      function loadDuaa() {
-        const duaaContent = document.getElementById('duaa-content');
-        duaaContent.innerHTML = [
-          {title: 'سيد الاستغفار', body: 'اللهم أنت ربي لا إله إلا أنت...'},
-          {title: 'دعاء الثبات', body: 'ربنا لا تزغ قلوبنا بعد إذ هديتنا...'}
-        ].map(d => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${d.title}</h3><p class="mt-2">${d.body}</p></div>`).join('');
-      }
-
-      // --- Reminders Page ---
-      function loadReminders() {
-        const remindersContent = document.getElementById('reminders-content');
-        remindersContent.innerHTML = [
-          {title: 'آية تبعث الأمل', body: 'قل يا عبادي الذين أسرفوا على أنفسهم لا تقنطوا من رحمة الله'},
-          {title: 'قول لابن القيم', body: 'إذا أراد الله بعبد خيرًا فتح له باب التوبة...'}
-        ].map(r => `<div class="card"><h3 class="text-xl font-semibold text-blue-400">${r.title}</h3><p class="mt-2">${r.body}</p></div>`).join('');
-      }
-
-      // --- Lectures Page ---
-      function loadLectures() {
-        const lecturesContainer = document.getElementById('lectures-container');
-        const videos = [
-          { id: '6evB0hHEUxw', title: 'التوبة الصادقة | الشيخ سمير مصطفى' },
-          { id: 'tCNBVOwDTkw', title: 'توب قبل الندم | محمد الغليظ' },
-          { id: 'qgzo-OKl_p4', title: 'كيف أعود إلى الله | عمر عبد الكافي' }
-        ];
-        lecturesContainer.innerHTML = videos.map(v => `
-          <div class="card">
-            <div class="aspect-w-16 aspect-h-9 bg-black">
-              <iframe src="https://www.youtube.com/embed/${v.id}" frameborder="0" allowfullscreen class="w-full h-64"></iframe>
-            </div>
-            <div class="p-2"><h3 class="text-lg font-semibold">${v.title}</h3></div>
-          </div>`).join('');
-      }
-
-      // --- Quran Page ---
-      function loadQuran() {
-        const quranContainer = document.getElementById('quran-container');
-        const reciters = [
-          { name: 'عبد الباسط عبد الصمد', src: 'https://server6.mp3quran.net/abdsamad/001.mp3' },
-          { name: 'محمد صديق المنشاوي', src: 'https://server8.mp3quran.net/minsh/001.mp3' },
-          { name: 'مشاري راشد العفاسي', src: 'https://server8.mp3quran.net/afs/001.mp3' },
-          { name: 'ماهر المعيقلي', src: 'https://server8.mp3quran.net/maher/001.mp3' },
-          { name: 'عبد الرحمن السديس', src: 'https://server8.mp3quran.net/sds/001.mp3' },
-          { name: 'سعود الشريم', src: 'https://server8.mp3quran.net/shur/001.mp3' },
-          { name: 'ياسر الدوسري', src: 'https://server8.mp3quran.net/yasser/001.mp3' },
-          { name: 'ناصر القطامي', src: 'https://server8.mp3quran.net/qtm/001.mp3' },
-          { name: 'إدريس أبكر', src: 'https://server8.mp3quran.net/abkr/001.mp3' },
-          { name: 'فارس عباد', src: 'https://server8.mp3quran.net/frs_a/001.mp3' },
-          { name: 'أحمد العجمي', src: 'https://server8.mp3quran.net/ajm/001.mp3' },
-          { name: 'محمد أيوب', src: 'https://server8.mp3quran.net/ayyub/001.mp3' },
-          { name: 'خالد الجليل', src: 'https://server8.mp3quran.net/jleel/001.mp3' },
-          { name: 'عادل الكلباني', src: 'https://server8.mp3quran.net/klb/001.mp3' },
-          { name: 'إبراهيم الأخضر', src: 'https://server8.mp3quran.net/akdr/001.mp3' },
-          { name: 'هزاع البلوشي', src: 'https://server8.mp3quran.net/hazza/001.mp3' },
-          { name: 'سعد الغامدي', src: 'https://server8.mp3quran.net/s_gmd/001.mp3' },
-          { name: 'عبد الله بصفر', src: 'https://server8.mp3quran.net/bsfr/001.mp3' },
-          { name: 'خالد القحطاني', src: 'https://server8.mp3quran.net/qht/001.mp3' },
-          { name: 'مشاري العتيبي', src: 'https://server8.mp3quran.net/mtby/001.mp3' }
-        ];
-
-        quranContainer.innerHTML = reciters.map(r => `
-          <div class="card">
-            <h3 class="text-xl font-semibold text-blue-400 mb-2">${r.name}</h3>
-            <audio controls class="w-full">
-              <source src="${r.src}" type="audio/mpeg">
-              المتصفح لا يدعم تشغيل الصوت.
-            </audio>
-          </div>
-        `).join('');
-      }
-
-      // --- Contact Form ---
-      document.getElementById('contact-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('✅ تم إرسال رسالتك بنجاح!');
-        e.target.reset();
-      });
-    });
-  </script>
+            // --- Lectures Page ---
+            function loadLectures() {
+                const lecturesContainer = document.getElementById('lectures-container');
+                const videos = [ 
+                    { id: '6evB0hHEUxw', title: 'التوبة الصادقة | الشيخ سمير مصطفى' }, 
+                    { id: 'tCNBVOwDTkw', title: 'توب قبل الندم | محمد الغليظ' },
+                    { id: 'aPqZ3M5Kc_4', title: 'التوبة طريق الجنة | أمجد سمير' }, 
+                    { id: 'zpa8p3J0_V0', title: 'قصص عن التوبة | الشيخ أحمد عامر' },
+                    { id: 'g-06L9Y_p4c', title: 'قصة توبة ماعز | محمود الحسنات' }, 
+                    { id: 'cK6SrgzZ7Fg', title: 'طرائق التوبة ونتائجها | د. عثمان الخميس' },
+                    { id: 'i0c1E_qj39M', title: 'فرصة التوبة | د. حازم شومان' }, 
+                    { id: '1bZABqUO7VE', title: 'باب التوبة مفتوح | د. محمد راتب النابلسي' },
+                    { id: '6O-tW3x-v_M', title: 'باب التوبة | مصطفى حسني' }, 
+                    { id: '5YyKl-i2O_w', title: 'يا تارك الصلاة | خالد الراشد' },
+                    { id: '2gWuaGz_xY8', title: 'قصة مؤثرة عن التوبة | منصور السالمي' },
+                    { id: 'qgzo-OKl_p4', title: 'كيف أعود إلى الله | عمر عبد الكافي' },
+                    { id: 'x5W-sC_G-b4', title: 'أبواب الرجوع إلى الله | سعد العتيق' },
+                    { id: 'Ntk6f092Zmk', title: 'قصة توبة صادقة | نبيل العوضي' },
+                    { id: 'LS53l8LwpHs', title: 'التوبة النصوح | الشيخ سمير مصطفى' }
+                ];
+                lecturesContainer.innerHTML = videos.map(video => 
+                    <div class="card rounded-lg overflow-hidden">
+                        <div class="aspect-w-16 aspect-h-9 bg-black"><iframe src="https://www.youtube.com/embed/${video.id}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe></div>
+                        <div class="p-4"><h3 class="text-lg font-semibold">${video.title}</h3></div>
+                    </div>).join('');
+            }
+            
+            // --- Contact Form ---
+            document.getElementById('contact-form').addEventListener('submit', (e) => { e.preventDefault(); alert('شكراً لرسالتك!'); e.target.reset(); });
+        });
+    </script>
 </body>
 </html>
-
